@@ -17,11 +17,10 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 				'order'  => '',
 				'group'  => '',
 				'joins'   => array(),
+				'multi' => FALSE,
 				// Match Modes: SPH_MATCH_ALL, SPH_MATCH_ANY, SPH_MATCH_PHRASE, SPH_MATCH_BOOLEAN,
 				// SPH_MATCH_EXTENDED, SPH_MATCH_FULLSCAN, SPH_MATCH_EXTENDED2
 				'matchmode' => SPH_MATCH_EXTENDED2,
-				// Sort Modes: SPH_SORT_RELEVANCE, SPH_SORT_ATTR_DESC, SPH_SORT_ATTR_ASC, SPH_SORT_TIME_SEGMENTS,
-				// SPH_SORT_EXTENDED, SPH_SORT_EXPR
 			),
 			$options
 		);
@@ -51,6 +50,8 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 			// int $min , int $max 
 			$this->sphinx->setIDRange($options['idrange'][0],$options['idrange'][1]);
 		}
+		// Sort Modes: SPH_SORT_RELEVANCE, SPH_SORT_ATTR_DESC, SPH_SORT_ATTR_ASC, SPH_SORT_TIME_SEGMENTS,
+		// SPH_SORT_EXTENDED, SPH_SORT_EXPR
 		if (!empty($options['sortmode']) && !empty($options['sortby'])) {
 			$this->sphinx->setSortMode($options['sortmode'],$options['sortby']);
 		}
@@ -70,8 +71,7 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 		// Set the query.
 		$query = '';
 		if (!empty($data)) {
-			if (!empty($data['__search_type']) && $data['__search_type'] == 'multi') {
-				unset($data['__search_type']);
+			if (!empty($options['multi']) && $options['multi']) {
 				$values = array_unique(array_values($data));
 				$query .= '@('.implode(',',array_keys($data)).') '.implode(' ',$values);
 			} else {
@@ -85,8 +85,8 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 		$this->sphinx->setMatchMode($options['matchmode']);
 		// Set the Limits, Limit 1 by default.
 		$this->sphinx->setLimits((int)$options['limit'][0],(int)$options['limit'][1],(int)$options['limit'][2],(int)$options['limit'][3]);
-		// Run the query.
-		$data = $this->sphinx->query($query, $m);
+		// Run the query. (Set to delta for now)
+		$data = $this->sphinx->query($query, 'delta_'.$m);
 		// If we find an error or no matches, return false.
 		$err = $this->sphinx->getLastError();
 		if (!empty($err) || empty($data['matches'])) { return false; }
