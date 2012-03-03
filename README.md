@@ -6,29 +6,30 @@ Sphinx is required in order for this plugin to work.
 
 [Download Sphinx][1]
 
-**Getting Started**
+## Getting Started ##
 
-* Install Sphinx.
-* Configure your sources and indexes in sphinx.conf.
-* Build your indexes.
-* Place something similar in your [Escher][2] config:
+1. Install Sphinx.
+2. Configure your sources and indexes in sphinx.conf.
+3. Build your indexes.
+4. Place something similar in your [Escher][2] config:
 
-```
-$datasource['sphinx'] = array(
-  'type' => array('sphinx','default'),
-	'settings' => array(
-		'host' => 'localhost',
-		'port' => 3312,
-	)
-);
-```
+	```
+	$datasource['sphinx'] = array(
+		'type' => array('sphinx','default'),
+		'settings' => array(
+			'prefix' => 'idx_',
+			'host' => 'localhost',
+			'port' => 3312,
+		)
+	);
+	```
 
-* Begin searching in just two lines of code:
+5. Begin searching in just two lines of code:
 
-```
-$sphinx = Load::Datasource('sphinx');
-$results = $sphinx->get('blog',array('body'=>'This is my search text'));
-```
+	```
+	$sphinx = Load::Datasource('sphinx');
+	$results = $sphinx->get('blog',array('body'=>'This is my search text'));
+	```
 
 Refer to [Sphinx documentation][3] to get more information on how to setup your sources and indexes.
 
