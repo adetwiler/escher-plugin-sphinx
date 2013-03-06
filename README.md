@@ -16,11 +16,9 @@ Sphinx is required in order for this plugin to work.
 	```
 	$datasource['sphinx'] = array(
 		'type' => array('sphinx','default'),
-		'settings' => array(
-			'prefix' => 'idx_',
-			'host' => 'localhost',
-			'port' => 3312,
-		)
+        'prefix' => 'idx_',
+        'host' => 'localhost',
+        'port' => 3312,
 	);
 	```
 
@@ -30,6 +28,13 @@ Sphinx is required in order for this plugin to work.
 	$sphinx = Load::Datasource('sphinx');
 	$results = $sphinx->get('blog',array('body'=>'This is my search text'));
 	```
+
+	or for multi-fields
+
+    ```
+    $sphinx = Load::Datasource('sphinx');
+    $results = $sphinx->get('blog',array('body,title'=>'This is my search text'));
+    ```
 
 Refer to [Sphinx documentation][3] to get more information on how to setup your sources and indexes.
 

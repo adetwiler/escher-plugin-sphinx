@@ -63,6 +63,21 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 			// int $min , int $max 
 			$this->sphinx->setIDRange($options['idrange'][0],$options['idrange'][1]);
 		}
+        if (!empty($options['filter'])) {
+            // string $attribute , array $values [, bool $exclude = false ]
+            if (!isset($options['filter'][2])) { $options['filter'][2] = false; }
+            $this->sphinx->setFilter($options['filter'][0],$options['filter'][1],$options['filter'][2]);
+        }
+        if (!empty($options['filterRange'])) {
+            // string $attribute , int $min , int $max [, bool $exclude = false ]
+            if (!isset($options['filterRange'][3])) { $options['filterRange'][3] = false; }
+            $this->sphinx->setFilterRange($options['filterRange'][0],$options['filterRange'][1],$options['filterRange'][2],$options['filterRange'][3]);
+        }
+        if (!empty($options['filterFloatRange'])) {
+            // string $attribute , float $min , float $max [, bool $exclude = false ]
+            if (!isset($options['filterFloatRange'][3])) { $options['filterFloatRange'][3] = false; }
+            $this->sphinx->setFilterFloatRange($options['filterFloatRange'][0],$options['filterFloatRange'][1],$options['filterFloatRange'][2],$options['filterFloatRange'][3]);
+        }
 		if (!empty($options['sortmode']) && !empty($options['sortby'])) {
 			// Sort Modes: SPH_SORT_RELEVANCE, SPH_SORT_ATTR_DESC, SPH_SORT_ATTR_ASC, SPH_SORT_TIME_SEGMENTS,
 			// SPH_SORT_EXTENDED, SPH_SORT_EXPR
