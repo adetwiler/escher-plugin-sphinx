@@ -64,9 +64,11 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 			$this->sphinx->setIDRange($options['idrange'][0],$options['idrange'][1]);
 		}
         if (!empty($options['filter'])) {
-            // string $attribute , array $values [, bool $exclude = false ]
-            if (!isset($options['filter'][2])) { $options['filter'][2] = false; }
-            $this->sphinx->setFilter($options['filter'][0],$options['filter'][1],$options['filter'][2]);
+            foreach ($options['filter'] as $filter) {
+                // string $attribute , array $values [, bool $exclude = false ]
+                if (!isset($filter[2])) { $filter[2] = false; }
+                $this->sphinx->setFilter($filter[0],$filter[1],$filter[2]);
+            }
         }
         if (!empty($options['filterRange'])) {
             // string $attribute , int $min , int $max [, bool $exclude = false ]
@@ -95,7 +97,7 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 			// Group: string $attribute , int $func [, string $groupsort = "@group desc" ] 
 			$this->sphinx->setGroupBy($options['group'][0],$options['group'][1],$options['group'][2]);
 		}
-		
+
 		// Set the query.
 		$query = '';
 		if (!empty($data)) {
