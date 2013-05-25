@@ -120,7 +120,10 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 		foreach ($result['matches'] as $key => $match) {
 			$results[] = Load::Model($m,$key);
 		}
-		
+
+        $results['total'] = $result['total'];
+        $results['total_found'] = $result['total_found'];
+
 		return $results;
 	}
 	
