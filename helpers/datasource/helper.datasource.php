@@ -19,7 +19,7 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 				'limit'  => 1,
 				'order'  => '',
 				'group'  => '',
-				'joins'   => array(),
+				'joins'  => array(),
 				'index'  => '',
 				// Match Modes: SPH_MATCH_ALL, SPH_MATCH_ANY, SPH_MATCH_PHRASE, SPH_MATCH_BOOLEAN,
 				// SPH_MATCH_EXTENDED, SPH_MATCH_FULLSCAN, SPH_MATCH_EXTENDED2
@@ -40,11 +40,17 @@ class Plugin_sphinx_Helper_datasource extends Helper_datasource {
 			$options['index'] = $this->prefix.$m;
 		} else if (!empty($options['index']) && $options['index']==='all') {
 			$options['index'] = '';
+        } else if (is_array($options['index'])) {
+            $indexes=array();
+            foreach($options['index'] as $index) {
+                $indexes[] = $this->prefix.$index;
+            }
+            $options['index'] = implode(',',$indexes);
 		} else {
 			// If an index is provided, add the prefix to it.
 			$options['index'] = $this->prefix.$options['index'];
 		}
-		
+
 		// Limit: int $offset , int $limit [, int $max_matches = 0 [, int $cutoff = 0 ]]
 		if (empty($options['limit'])) {
 			$options['limit']=array(0,1,0,0);
